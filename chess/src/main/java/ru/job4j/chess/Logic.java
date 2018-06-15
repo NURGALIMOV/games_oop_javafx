@@ -23,7 +23,7 @@ public class Logic {
     public boolean move(Cell source, Cell dest) {
         boolean rst = false;
         int index = this.findBy(source);
-        if (index != -1) {
+        if (index != -1 && this.cellBusyCheck(dest) && this.checkMove(index, source, dest)) {
             Cell[] steps = this.figures[index].way(source, dest);
             if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
                 rst = true;
@@ -49,5 +49,20 @@ public class Logic {
             }
         }
         return rst;
+    }
+
+    public boolean cellBusyCheck(Cell dest) {
+        boolean result = true;
+        for (Figure figure : figures) {
+            if ((dest.x == figure.position().x) && (dest.y == figure.position().y)) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public boolean checkMove(int index, Cell source, Cell dest) {
+        return figures[index].checkMove(figures, source, dest);
     }
 }

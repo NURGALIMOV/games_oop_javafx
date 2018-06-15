@@ -14,4 +14,5 @@ public interface Figure {
 
     Figure copy(Cell dest);
 
+    boolean checkMove(Figure[] figure, Cell source, Cell dest);
 }

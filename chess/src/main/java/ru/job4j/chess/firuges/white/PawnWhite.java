@@ -24,11 +24,20 @@ public class PawnWhite implements Figure {
 
     @Override
     public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] { dest };
+        Cell[] steps = new Cell[0];
+        if (source.y == dest.y - 1 && source.x == dest.x) {
+            steps = new Cell[]{dest};
+        }
+        return steps;
     }
 
     @Override
     public Figure copy(Cell dest) {
         return new PawnWhite(dest);
+    }
+
+    @Override
+    public boolean checkMove(Figure[] figure, Cell source, Cell dest) {
+        return true;
     }
 }

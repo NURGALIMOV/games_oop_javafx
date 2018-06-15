@@ -4,11 +4,11 @@ import ru.job4j.chess.firuges.Cell;
 import ru.job4j.chess.firuges.Figure;
 
 /**
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1
  */
+
 public class KingBlack implements Figure {
     private final Cell position;
 
@@ -23,11 +23,20 @@ public class KingBlack implements Figure {
 
     @Override
     public Cell[] way(Cell source, Cell dest) {
-        return new Cell[] { dest };
+        Cell[] steps = new Cell[0];
+        if (Math.abs(source.x - dest.x) < 2 && Math.abs(source.y - dest.y) < 2) {
+            steps = new Cell[]{dest};
+        }
+        return steps;
     }
 
     @Override
     public Figure copy(Cell dest) {
         return new KingBlack(dest);
+    }
+
+    @Override
+    public boolean checkMove(Figure[] figure, Cell source, Cell dest) {
+        return true;
     }
 }
