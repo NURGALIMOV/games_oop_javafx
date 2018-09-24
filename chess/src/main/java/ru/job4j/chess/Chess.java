@@ -17,6 +17,8 @@ import ru.job4j.chess.firuges.Figure;
 import ru.job4j.chess.firuges.black.*;
 import ru.job4j.chess.firuges.white.*;
 
+import java.util.function.BiFunction;
+
 public class Chess extends Application {
     private static final String JOB4J = "Шахматы на www.job4j.ru";
     private final int size = 8;
@@ -60,7 +62,29 @@ public class Chess extends Application {
         );
         rect.setOnMouseReleased(
                 event -> {
-                    if (logic.move(this.findBy(momento.getX(), momento.getY()), this.findBy(event.getX(), event.getY()))) {
+                    if (logic.move(this.findBy(momento.getX(), momento.getY(), (a, b) -> {
+                        Cell rst = Cell.A1;
+                        int x1 = (int) (a / 40);
+                        int y1 = (int) (b / 40);
+                        for (Cell cell : Cell.values()) {
+                            if (cell.x == x1 && cell.y == y1) {
+                                rst = cell;
+                                break;
+                            }
+                        }
+                        return rst;
+                    }), this.findBy(event.getX(), event.getY(), (a, b) -> {
+                        Cell rst = Cell.A1;
+                        int x1 = (int) (a / 40);
+                        int y1 = (int) (b / 40);
+                        for (Cell cell : Cell.values()) {
+                            if (cell.x == x1 && cell.y == y1) {
+                                rst = cell;
+                                break;
+                            }
+                        }
+                        return rst;
+                    }))) {
                         rect.setX(((int) event.getX() / 40) * 40 + 5);
                         rect.setY(((int) event.getY() / 40) * 40 + 5);
                     } else {
@@ -164,16 +188,7 @@ public class Chess extends Application {
         );
     }
 
-    private Cell findBy(double graphX, double graphY) {
-        Cell rst = Cell.A1;
-        int x = (int) graphX / 40;
-        int y = (int) graphY / 40;
-        for (Cell cell : Cell.values()) {
-            if (cell.x == x && cell.y == y) {
-                rst = cell;
-                break;
-            }
-        }
-        return rst;
+    private Cell findBy(double graphX, double graphY, BiFunction<Double, Double, Cell> biFunction) {
+        return biFunction.apply(graphX, graphY);
     }
 }
